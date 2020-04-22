@@ -41,22 +41,23 @@ def get_pet_labels(image_dir):
       List. The list contains for following item:
          index 0 = pet image label (string)
     """
-    results_dic = {}
+    results_dic = dict()
     
     # Retrieve the filenames from folder pet_images/
     filename_list = listdir(image_dir)
-
+    
     for idx in range(len(filename_list)):
-        if filename_list[idx] not in results_dic:
-            raw_input = filename_list[idx].lower().split("_")
-            dog_name = []
-            for word in raw_input:
-                if word.isalpha():
-                    dog_name.append(word)
-                    dog_name.append(" ")
-            dog_name = ["".join(dog_name).strip()]
-            results_dic[filename_list[idx]] = dog_name
-        else: 
-            print("** Warning: Key=", filename_list[idx], "already exists in results_dic with value =", results_dic[filename_list[idx]])
-        
+        if filename_list[idx][0] != ".": 
+            if filename_list[idx] not in results_dic:
+                raw_input = filename_list[idx].lower().split("_")
+                dog_name = []
+                for word in raw_input:
+                    if word.isalpha():
+                        dog_name.append(word)
+                        dog_name.append(" ")
+                dog_name = ["".join(dog_name).strip()]
+                results_dic[filename_list[idx]] = dog_name
+            else: 
+                print("** Warning: Key= {} already exists in results_dic with value {}".format(filename_list[idx], results_dic[filename_list[idx]]))
+
     return results_dic
