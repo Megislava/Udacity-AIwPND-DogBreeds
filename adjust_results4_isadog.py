@@ -1,114 +1,94 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# */AIPND-revision/intropyproject-classify-pet-images/calculates_results_stats.py
+# */AIPND-revision/intropyproject-classify-pet-images/adjust_results4_isadog.py
 #                                                                             
 # PROGRAMMER: Anna Jungmann
-# DATE CREATED: 04/20/2020                                 
+# DATE CREATED: 04/20/2020                                
 # REVISED DATE: 
-# PURPOSE: Create a function calculates_results_stats that calculates the 
-#          statistics of the results of the programrun using the classifier's model 
-#          architecture to classify the images. This function will use the 
-#          results in the results dictionary to calculate these statistics. 
-#          This function will then put the results statistics in a dictionary
-#          (results_stats_dic) that's created and returned by this function.
-#          This will allow the user of the program to determine the 'best' 
-#          model for classifying the images. The statistics that are calculated
-#          will be counts and percentages. Please see "Intro to Python - Project
-#          classifying Images - xx Calculating Results" for details on the 
-#          how to calculate the counts and percentages for this function.    
+# PURPOSE: Create a function adjust_results4_isadog that adjusts the results 
+#          dictionary to indicate whether or not the pet image label is of-a-dog, 
+#          and to indicate whether or not the classifier image label is of-a-dog.
+#          All dog labels from both the pet images and the classifier function
+#          will be found in the dognames.txt file. We recommend reading all the
+#          dog names in dognames.txt into a dictionary where the 'key' is the 
+#          dog name (from dognames.txt) and the 'value' is one. If a label is 
+#          found to exist within this dictionary of dog names then the label 
+#          is of-a-dog, otherwise the label isn't of a dog. Alternatively one 
+#          could also read all the dog names into a list and then if the label
+#          is found to exist within this list - the label is of-a-dog, otherwise
+#          the label isn't of a dog. 
 #         This function inputs:
-#            -The results dictionary as results_dic within calculates_results_stats 
+#            -The results dictionary as results_dic within adjust_results4_isadog 
 #             function and results for the function call within main.
-#         This function creates and returns the Results Statistics Dictionary -
-#          results_stats_dic. This dictionary contains the results statistics 
-#          (either a percentage or a count) where the key is the statistic's 
-#           name (starting with 'pct' for percentage or 'n' for count) and value 
-#          is the statistic's value.  This dictionary should contain the 
-#          following keys:
-#            n_images - number of images
-#            n_dogs_img - number of dog images
-#            n_notdogs_img - number of NON-dog images
-#            n_match - number of matches between pet & classifier labels
-#            n_correct_dogs - number of correctly classified dog images
-#            n_correct_notdogs - number of correctly classified NON-dog images
-#            n_correct_breed - number of correctly classified dog breeds
-#            pct_match - percentage of correct matches
-#            pct_correct_dogs - percentage of correctly classified dogs
-#            pct_correct_breed - percentage of correctly classified dog breeds
-#            pct_correct_notdogs - percentage of correctly classified NON-dogs
+#            -The text file with dog names as dogfile within adjust_results4_isadog
+#             function and in_arg.dogfile for the function call within main. 
+#           This function uses the extend function to add items to the list 
+#           that's the 'value' of the results dictionary. You will be adding the
+#           whether or not the pet image label is of-a-dog as the item at index
+#           3 of the list and whether or not the classifier label is of-a-dog as
+#           the item at index 4 of the list. Note we recommend setting the values
+#           at indices 3 & 4 to 1 when the label is of-a-dog and to 0 when the 
+#           label isn't a dog.
 #
 ##
-# TODO 5: Define calculates_results_stats function below, please be certain to replace None
-#       in the return statement with the results_stats_dic dictionary that you create 
-#       with this function
+# TODO 4: Define adjust_results4_isadog function below, specifically replace the None
+#       below by the function definition of the adjust_results4_isadog function. 
+#       Notice that this function doesn't return anything because the 
+#       results_dic dictionary that is passed into the function is a mutable 
+#       data type so no return is needed.
 # 
-def calculates_results_stats(results_dic):
+def adjust_results4_isadog(results_dic, dogfile):
     """
-    Calculates statistics of the results of the program run using classifier's model 
-    architecture to classifying pet images. Then puts the results statistics in a 
-    dictionary (results_stats_dic) so that it's returned for printing as to help
-    the user to determine the 'best' model for classifying images. Note that 
-    the statistics calculated as the results are either percentages or counts.
+    Adjusts the results dictionary to determine if classifier correctly 
+    classified images 'as a dog' or 'not a dog' especially when not a match. 
+    Demonstrates if model architecture correctly classifies dog images even if
+    it gets dog breed wrong (not a match).
     Parameters:
-      results_dic - Dictionary with key as image filename and value as a List 
-             (index)idx 0 = pet image label (string)
-                    idx 1 = classifier label (string)
-                    idx 2 = 1/0 (int)  where 1 = match between pet image and 
-                            classifer labels and 0 = no match between labels
-                    idx 3 = 1/0 (int)  where 1 = pet image 'is-a' dog and 
+      results_dic - Dictionary with 'key' as image filename and 'value' as a 
+                    List. Where the list will contain the following items: 
+                  index 0 = pet image label (string)
+                  index 1 = classifier label (string)
+                  index 2 = 1/0 (int)  where 1 = match between pet image
+                    and classifer labels and 0 = no match between labels
+                ------ where index 3 & index 4 are added by this function -----
+                 NEW - index 3 = 1/0 (int)  where 1 = pet image 'is-a' dog and 
                             0 = pet Image 'is-NOT-a' dog. 
-                    idx 4 = 1/0 (int)  where 1 = Classifier classifies image 
+                 NEW - index 4 = 1/0 (int)  where 1 = Classifier classifies image 
                             'as-a' dog and 0 = Classifier classifies image  
                             'as-NOT-a' dog.
+     dogfile - A text file that contains names of all dogs from the classifier
+               function and dog names from the pet image files. This file has 
+               one dog name per line dog names are all in lowercase with 
+               spaces separating the distinct words of the dog name. Dog names
+               from the classifier function can be a string of dog names separated
+               by commas when a particular breed of dog has multiple dog names 
+               associated with that breed (ex. maltese dog, maltese terrier, 
+               maltese) (string - indicates text file's filename)
     Returns:
-     results_stats_dic - Dictionary that contains the results statistics (either
-                    a percentage or a count) where the key is the statistic's 
-                     name (starting with 'pct' for percentage or 'n' for count)
-                     and the value is the statistic's value. See comments above
-                     and the previous topic Calculating Results in the class for details
-                     on how to calculate the counts and statistics.
-    """  
+           None - results_dic is mutable data type so no return needed.
+    """           
+    dognames_dic = dict()
     
-    results_stats_dic = dict()
-       
-    # number of total images
-    results_stats_dic['n_images'] = len(results_dic)
-    # init of other 'n's
-    results_stats_dic["n_dogs_img"] = 0
-    results_stats_dic["n_notdogs_img"] = 0
-    results_stats_dic["n_match"] = 0
-    results_stats_dic["n_correct_dogs"] = 0
-    results_stats_dic["n_correct_notdogs"] = 0
-    results_stats_dic["n_correct_breed"] = 0
+    with open(dogfile) as file:
+        line = file.readline()
+        
+        while line != "":
+            line.rstrip()
+            
+            if line in dognames_dic:
+                print("Warning")                
+            else:
+                dognames_dic[line.rstrip()] = 1
+            line = file.readline()
     
     for key in results_dic:
-        # a dog
-        if results_dic[key][3] == 1:
-            results_stats_dic['n_dogs_img'] += 1            
-            # correct dog
-            if results_dic[key][4] == 1:
-                results_stats_dic['n_correct_dogs'] += 1
-            # corrent non-dog
+        if results_dic[key][0] in dognames_dic:
+            if results_dic[key][1] in dognames_dic:
+                results_dic[key].extend((1, 1))
             else:
-                results_stats_dic["n_correct_notdogs"] += 1            
-            # correct breed
-            if results_dic[key][2] == 1:
-                results_stats_dic['n_correct_breed'] += 1       
-        # a non-dog        
+                results_dic[key].extend((1, 0))
         else:
-            results_stats_dic["n_notdogs_img"] += 1
-        
-        # correct match
-        if results_dic[key][2] == 1:
-                results_stats_dic['n_match'] += 1  
-            
-    results_stats_dic['pct_match'] = 0 if results_stats_dic['n_images'] == 0 else (results_stats_dic['n_match'] / results_stats_dic['n_images']) * 100
-    
-    results_stats_dic['pct_correct_dogs'] = 0 if results_stats_dic['n_dogs_img'] == 0 else (results_stats_dic['n_correct_dogs'] / results_stats_dic['n_dogs_img']) * 100
-
-    results_stats_dic['pct_correct_breed'] = 0 if results_stats_dic['n_dogs_img'] == 0 else (results_stats_dic['n_correct_breed'] / results_stats_dic['n_dogs_img']) * 100
-
-    results_stats_dic['pct_correct_notdogs'] = 0 if results_stats_dic['n_notdogs_img'] == 0 else (results_stats_dic['n_correct_notdogs'] / results_stats_dic['n_notdogs_img']) * 100
-
-         
-    return results_stats_dic
+            if results_dic[key][1] in dognames_dic:
+                results_dic[key].extend((0, 1))
+            else:
+                results_dic[key].extend((0, 0))
