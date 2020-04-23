@@ -22,7 +22,7 @@ def get_input_args():
     parser = argparse.ArgumentParser()
     
     parser.add_argument('--dir', type = str, default = 'pet_images/', help = 'path to the folder of pet images') 
-    parser.add_argument('--arch', type = str, default = 'vgg', help = 'nevim')
-    parser.add_argument('--dogfile', type = str, default = 'dognames.txt', help = 'nevim2')
+    parser.add_argument('--arch', type = str, default = 'vgg', help = 'Type of model that will execute classification, default is vgg')
+    parser.add_argument('--dogfile', type = str, default = 'dognames.txt', help = 'File with names of dog breeds')
     
     return parser.parse_args()

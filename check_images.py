@@ -54,11 +54,11 @@ def main():
 
     adjust_results4_isadog(results, in_arg.dogfile)
 
-    check_classifying_labels_as_dogs(results)
+    #check_classifying_labels_as_dogs(results)
 
     results_stats = calculates_results_stats(results)
 
-    check_calculating_results(results, results_stats)
+    #check_calculating_results(results, results_stats)
 
     print_results(results, results_stats, in_arg.arch, True, True)
     
